@@ -1,0 +1,30 @@
+{
+  "name": "xueba/wxapi",
+  "type": "library",
+  "description": "微信API封装",
+  "keywords": [
+    "weixin",
+    "xueba"
+  ],
+  "homepage": "http://young.xueba.mobi",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Xueba Team",
+      "email": "pantao@xueba.mobi"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "guzzlehttp/guzzle": "~5.0"
+  },
+  "require-dev": {
+    "codeception/codeception": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Xueba\\WxApi\\": "src/"
+    },
+    "classmap": ["src/QY/Crypt/"]
+  }
+}

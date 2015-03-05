@@ -1,0 +1,7 @@
+.idea
+*.DS_Store
+vendor
+composer.lock
+composer.phar
+codecept.phar
+tests/_output/*
