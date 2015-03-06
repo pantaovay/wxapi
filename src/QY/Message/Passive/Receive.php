@@ -14,7 +14,7 @@ class Receive
     public function __construct($xmlStr)
     {
         $this->_xmlStr = $xmlStr;
-        $this->_xml = simplexml_load_string($xmlStr);
+        $this->_xml = simplexml_load_string($xmlStr, "SimpleXMLElement", LIBXML_NOCDATA);
     }
 
     public function getJson($key = null)
