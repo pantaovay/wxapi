@@ -1,5 +1,6 @@
 <?php
 namespace Xueba\WxApi\QY;
+use GuzzleHttp\Event\CompleteEvent;
 
 class Client extends \GuzzleHttp\Client
 {
@@ -26,6 +27,13 @@ class Client extends \GuzzleHttp\Client
         {
             self::$_wxcpt = new \WXBizMsgCrypt($this->_token, $this->_encodingAesKey, $this->_corpId);
         }
+        $this->getEmitter()->on('complete', function (CompleteEvent $e) {
+            $result = $e->getResponse()->json();
+            if (isset($result['errcode']) && $result['errcode'] != 0)
+            {
+                throw new Exception($result['errmsg'], $result['errcode']);
+            }
+        });
     }
 
     public function getAccessToken()
@@ -56,14 +64,22 @@ class Client extends \GuzzleHttp\Client
     public function encryptMsg($sReplyMsg, $sTimeStamp, $sNonce)
     {
         $sEncryptMsg = '';
-        self::_getWxcpt()->EncryptMsg($sReplyMsg, $sTimeStamp, $sNonce, $sEncryptMsg);
+        $errCode = self::_getWxcpt()->EncryptMsg($sReplyMsg, $sTimeStamp, $sNonce, $sEncryptMsg);
+        if ($errCode != 0)
+        {
+            throw new Exception('', $errCode);
+        }
         return $sEncryptMsg;
     }
 
     public function decryptMsg($sMsgSignature, $sTimeStamp = null, $sNonce, $sPostData)
     {
         $sMsg = '';
-        self::_getWxcpt()->DecryptMsg($sMsgSignature, $sTimeStamp, $sNonce, $sPostData, $sMsg);
+        $errCode = self::_getWxcpt()->DecryptMsg($sMsgSignature, $sTimeStamp, $sNonce, $sPostData, $sMsg);
+        if ($errCode != 0)
+        {
+            throw new Exception('', $errCode);
+        }
         return $sMsg;
     }
 
