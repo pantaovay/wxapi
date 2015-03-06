@@ -12,7 +12,6 @@ class News
    <ArticleCount>%s</ArticleCount>
    <Articles>
 HEADER;
-
     const XML_TEMPLATE_ITEM = <<<ITEM
         <item>
            <Title><![CDATA[%s]]></Title>

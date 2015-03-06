@@ -17,7 +17,6 @@ class Video
 </xml>
 XML;
 
-
     public static function getXml($toUserName, $fromUserName, $createTime, $mediaId, $title, $description)
     {
         return sprintf(self::XML_TEMPLATE, $toUserName, $fromUserName, $createTime, $mediaId, $title, $description);

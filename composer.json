@@ -25,6 +25,6 @@
     "psr-4": {
       "Xueba\\WxApi\\": "src/"
     },
-    "classmap": ["src/QY/Crypt/"]
+    "classmap": ["src/Crypt/"]
   }
 }

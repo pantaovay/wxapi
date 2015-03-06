@@ -1,5 +1,5 @@
 <?php
-namespace Xueba\WxApi\QY;
+namespace Xueba\WxApi;
 
 class Exception extends \Exception
 {
@@ -17,7 +17,7 @@ class Exception extends \Exception
         '-40011' =>	'生成xml失败',
     );
 
-    public function __construct($message = '', $code)
+    public function __construct($message = '', $code = 0)
     {
         if (in_array($code, array_keys(self::$_cryptErrcodeAndErrmsg)))
         {
