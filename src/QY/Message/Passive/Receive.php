@@ -17,7 +17,7 @@ class Receive
         $this->_xml = simplexml_load_string($xmlStr, "SimpleXMLElement", LIBXML_NOCDATA);
     }
 
-    public function getJson($key = null)
+    public function toArray($key = null)
     {
         if (is_null($this->_xmlJson))
         {

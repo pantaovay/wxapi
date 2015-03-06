@@ -1,6 +1,6 @@
 <?php
 
-class ClientText extends \Codeception\TestCase\Test
+class ClientTest extends \Codeception\TestCase\Test
 {
     /**
      * @var \UnitTester
@@ -77,7 +77,7 @@ class ClientText extends \Codeception\TestCase\Test
         $this->tester->assertNotEmpty($replyEchoStr);
     }
 
-    public function testEncryptMsg()
+    public function testEncryptDecryptMsg()
     {
         $encodingAesKey = "jWmYm7qr5nMoAUwZRjGtBxmz3KA1tkAj3ykkR6q2B2C";
         $token = "QDG6eK";
