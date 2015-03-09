@@ -7,10 +7,9 @@ use Xueba\WxApi\Exception;
 class Client extends \GuzzleHttp\Client
 {
     use Crypt;
+    use AccessToken, Message, Menu;
 
     const BASE_URL = 'https://qyapi.weixin.qq.com';
-    const GET_ACCESS_TOKEN_URI = 'cgi-bin/gettoken';
-    const SEND_MESSAGE_URI = 'cgi-bin/message/send';
 
     private $_corpId;
     private $_corpSecret;
@@ -35,23 +34,5 @@ class Client extends \GuzzleHttp\Client
                 throw new Exception($result['errmsg'], $result['errcode']);
             }
         });
-    }
-
-    public function getAccessToken()
-    {
-        $response = $this->get(self::GET_ACCESS_TOKEN_URI, [
-            'query' => ['corpid' => $this->_corpId, 'corpsecret' => $this->_corpSecret]
-        ]);
-        return $response->json()['access_token'];
-    }
-
-    public function sendMessage($jsonMessage)
-    {
-        $response = $this->post(self::SEND_MESSAGE_URI, [
-            'query' => ['access_token' => $this->getAccessToken()],
-            'body'  => $jsonMessage,
-        ]);
-
-        return $response->json();
     }
 }

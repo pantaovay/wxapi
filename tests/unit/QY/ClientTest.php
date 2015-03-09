@@ -97,4 +97,23 @@ class ClientTest extends \Codeception\TestCase\Test
         codecept_debug($sEncryptMsg);
         $this->tester->assertNotEmpty($sEncryptMsg);
     }
+
+    public function testMenu()
+    {
+        $buttons = array();
+        $button = new \Xueba\WxApi\QY\Button('打开网址');
+        $button->addSubButton(new \Xueba\WxApi\QY\Button('百度', 'view', '', 'http://baidu.com'));
+        $button->addSubButton(new \Xueba\WxApi\QY\Button('360', 'view', '', 'http://360.com'));
+        $buttons[] = $button;
+        $button = new \Xueba\WxApi\QY\Button('位置选择', 'location_select', 'poi_selete');
+        $buttons[] = $button;
+
+        $result = $this->client->createMenu($buttons, $this->agentid);
+        codecept_debug($result);
+        $result = $this->client->getMenu($this->agentid);
+        codecept_debug($result);
+        $this->tester->assertEquals('打开网址', $result['menu']['button'][0]['name']);
+        $result = $this->client->deleteMenu($this->agentid);
+        codecept_debug($result);
+    }
 }
