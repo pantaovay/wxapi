@@ -7,7 +7,7 @@ use Xueba\WxApi\Exception;
 class Client extends \GuzzleHttp\Client
 {
     use Crypt;
-    use AccessToken, Message, Menu;
+    use AccessToken, Message, Menu, Media;
 
     const BASE_URL = 'https://qyapi.weixin.qq.com';
 
@@ -28,10 +28,14 @@ class Client extends \GuzzleHttp\Client
         }
 
         $this->getEmitter()->on('complete', function (CompleteEvent $e) {
-            $result = $e->getResponse()->json();
-            if (isset($result['errcode']) && $result['errcode'] != 0)
+            $response = $e->getResponse();
+            if ($response->getHeader('Content-Type') == 'application/json')
             {
-                throw new Exception($result['errmsg'], $result['errcode']);
+                $result = $response->json();
+                if (isset($result['errcode']) && $result['errcode'] != 0)
+                {
+                    throw new Exception($result['errmsg'], $result['errcode']);
+                }
             }
         });
     }

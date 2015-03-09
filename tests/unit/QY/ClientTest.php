@@ -18,7 +18,7 @@ class ClientTest extends \Codeception\TestCase\Test
     protected $agentid = 5;
     protected $imageId = '1URdrsGXP_B4lodF-sBf06qr6YCxuHALq1uD0Z-_e95ax3jgHsNiKxDUhB6bqeSDh';
     protected $voiceId = '1dpU1WQBQ7iobfeHN5UCCf3r-ImsS6nQO3k9NFxWgeakkrWESoTh06wxbX7X7gSor274s08X9lNYh-JpXyrZbgw';
-    protected $toUser = 'pantaovay';
+    protected $toUser = 'guikunzhi';
 
     protected function _before()
     {
@@ -115,5 +115,19 @@ class ClientTest extends \Codeception\TestCase\Test
         $this->tester->assertEquals('打开网址', $result['menu']['button'][0]['name']);
         $result = $this->client->deleteMenu($this->agentid);
         codecept_debug($result);
+    }
+
+    public function testUploadMedia()
+    {
+        $response = $this->client->uploadMedia('/data/test.jpg','image');
+        codecept_debug($response);
+        $this->tester->assertEquals('image', $response['type']);
+    }
+
+    public function testGetMedia()
+    {
+        $response = $this->client->getMedia($this->voiceId);
+        codecept_debug($response);
+        $this->tester->assertNotEmpty($response);
     }
 }
