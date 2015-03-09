@@ -10,7 +10,8 @@ trait Media
 
     public function uploadMedia($media, $type)
     {
-        if (is_string($media)) {
+        if (is_string($media))
+        {
             $media = Utils::create(Utils::open($media, 'r'));
         }
         $response = $this->post(self::$_uploadMediaURI, [

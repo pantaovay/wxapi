@@ -29,7 +29,7 @@ class Client extends \GuzzleHttp\Client
 
         $this->getEmitter()->on('complete', function (CompleteEvent $e) {
             $response = $e->getResponse();
-            if ($response->getHeader('Content-Type') == 'application/json')
+            if ($response->getHeader('Content-Type') == 'application/json; charset=utf-8')
             {
                 $result = $response->json();
                 if (isset($result['errcode']) && $result['errcode'] != 0)
