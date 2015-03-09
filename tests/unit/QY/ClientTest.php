@@ -18,7 +18,7 @@ class ClientTest extends \Codeception\TestCase\Test
     protected $agentid = 5;
     protected $imageId = '1URdrsGXP_B4lodF-sBf06qr6YCxuHALq1uD0Z-_e95ax3jgHsNiKxDUhB6bqeSDh';
     protected $voiceId = '1dpU1WQBQ7iobfeHN5UCCf3r-ImsS6nQO3k9NFxWgeakkrWESoTh06wxbX7X7gSor274s08X9lNYh-JpXyrZbgw';
-    protected $toUser = 'guikunzhi';
+    protected $toUser = 'pantaovay';
 
     protected function _before()
     {
@@ -129,5 +129,54 @@ class ClientTest extends \Codeception\TestCase\Test
         $response = $this->client->getMedia($this->voiceId);
         codecept_debug($response);
         $this->tester->assertNotEmpty($response);
+    }
+
+    public function testDepartment()
+    {
+        $subDepartments = $this->client->getSubDepartments(1);
+        $departmentId = $this->client->createDepartment(new \Xueba\WxApi\QY\AddressBook\Department('测试部门test', 1, '', $subDepartments[count($subDepartments) - 1]['id'] + 1));
+        $this->client->updateDepartment(new \Xueba\WxApi\QY\AddressBook\Department('测试更新名字test', 1, '', $departmentId));
+        $subDepartments = $this->client->getSubDepartments(1);
+        $this->tester->assertEquals($departmentId, $subDepartments[count($subDepartments) - 1]['id']);
+        $this->tester->assertEquals('测试更新名字test', $subDepartments[count($subDepartments) - 1]['name']);
+        $this->client->deleteDepartment($departmentId);
+    }
+
+    public function testUser()
+    {
+        $originCount = count($this->client->getDepartmentUser(1));
+        $this->client->createUser(new \Xueba\WxApi\QY\AddressBook\User('test', '测试', 1, '', '15652792301'));
+        $this->assertEquals('测试', $this->client->getUser('test')['name']);
+        $this->client->updateUser(new \Xueba\WxApi\QY\AddressBook\User('test', '测试哈哈', 1, '', '15652792301'));
+        $this->assertEquals('测试哈哈', $this->client->getUser('test')['name']);
+
+        $this->tester->assertEquals($originCount + 1, count($this->client->getDepartmentUser(1)));
+        codecept_debug($this->client->getDepartmentUserDetail(1));
+
+        //$this->client->inviteUser('test');
+        $this->client->deleteUser('test');
+
+        $this->client->createUser(new \Xueba\WxApi\QY\AddressBook\User('test1', '测试', 1, '', '15652792301'));
+        //$this->client->createUser(new \Xueba\WxApi\QY\AddressBook\User('test2', '测试', 1, '', '15652792301'));
+        $this->client->batchDeleteUser(['test1']);
+    }
+
+    public function testTag()
+    {
+        $tagId = $this->client->createTag('测试');
+        $this->client->updateTag($tagId, '测试更新名字');
+        $tagList = $this->client->getTagList();
+        foreach ($tagList as $tag)
+        {
+            if ($tag['tagid'] == $tagId)
+            {
+                $this->tester->assertEquals('测试更新名字', $tag['tagname']);
+            }
+        }
+        $this->client->addTagUser($tagId, ['pantaovay'], [1]);
+        codecept_debug($this->client->getTagUser($tagId));
+        $this->tester->assertContains(1, $this->client->getTagUser($tagId)['partylist']);
+        $this->client->deleteTagUser($tagId, ['pantaovay'], [1]);
+        $this->client->deleteTag($tagId);
     }
 }
