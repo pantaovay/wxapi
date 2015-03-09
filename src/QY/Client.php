@@ -7,7 +7,7 @@ use Xueba\WxApi\Exception;
 class Client extends \GuzzleHttp\Client
 {
     use Crypt;
-    use AccessToken, AddressBook, Message, Menu, Media;
+    use AccessToken, AddressBook, Message, Menu, Media, OAuth2;
 
     const BASE_URL = 'https://qyapi.weixin.qq.com';
 
