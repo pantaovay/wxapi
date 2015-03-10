@@ -13,12 +13,12 @@ class Text
    "text": {
        "content": "%s"
    },
-   "safe":"0"
+   "safe":"%s"
 }
 JSON;
 
-    public static function getJson($agentId, $content, $toUser = '@all', $toParty = '', $toTag = '')
+    public static function getJson($agentId, $content, $toUser = '@all', $toParty = '', $toTag = '', $safe = 0)
     {
-        return sprintf(self::JSON_TEMPLATE, $toUser, $toParty, $toTag, $agentId, $content);
+        return sprintf(self::JSON_TEMPLATE, $toUser, $toParty, $toTag, $agentId, $content, $safe);
     }
 }

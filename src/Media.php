@@ -1,5 +1,5 @@
 <?php
-namespace Xueba\WxApi\QY;
+namespace Xueba\WxApi;
 
 use GuzzleHttp\Stream\Utils;
 
@@ -10,11 +10,8 @@ trait Media
 
     public function uploadMedia($media, $type)
     {
-        if (is_string($media))
-        {
-            $media = Utils::create(Utils::open($media, 'r'));
-        }
-        $response = $this->post(self::$_uploadMediaURI, [
+        $media = Utils::create(Utils::open($media, 'r'));
+        $response = $this->post(self::MEDIA_BASE_URL . '/' . self::$_uploadMediaURI, [
             'headers' => ['Content-Type' => 'multipart/form-data'],
             'query' => ['access_token' => $this->getAccessToken(), 'type' => $type],
             'body' => ['media' => $media]
@@ -25,7 +22,7 @@ trait Media
 
     public function getMedia($mediaID)
     {
-        $response = $this->get(self::$_downloadMediaURI, [
+        $response = $this->get(self::MEDIA_BASE_URL . '/' . self::$_downloadMediaURI, [
             'query' =>  ['access_token' => $this->getAccessToken(), 'media_id' => $mediaID]
         ]);
         return $response->getBody();

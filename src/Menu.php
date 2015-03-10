@@ -1,13 +1,17 @@
 <?php
-namespace Xueba\WxApi\QY;
+namespace Xueba\WxApi;
 
+/**
+ * Class Menu 自定义菜单管理 MP平台不需要agentId参数
+ * @package Xueba\WxApi
+ */
 trait Menu
 {
     private static $_createMenuUri = 'cgi-bin/menu/create';
     private static $_deleteMenuUri = 'cgi-bin/menu/delete';
     private static $_getMenuUri = 'cgi-bin/menu/get';
 
-    public function createMenu($buttons, $agentId)
+    public function createMenu($buttons, $agentId = '')
     {
         $menu = array(
             'button' => array(),
@@ -24,7 +28,7 @@ trait Menu
         return $response->json();
     }
 
-    public function deleteMenu($agentId)
+    public function deleteMenu($agentId = '')
     {
         $response = $this->get(self::$_deleteMenuUri, [
             'query' => ['access_token' => $this->getAccessToken(), 'agentid' => $agentId],
@@ -32,7 +36,7 @@ trait Menu
         return $response->json();
     }
 
-    public function getMenu($agentId)
+    public function getMenu($agentId = '')
     {
         $response = $this->get(self::$_getMenuUri, [
             'query' => ['access_token' => $this->getAccessToken(), 'agentid' => $agentId],

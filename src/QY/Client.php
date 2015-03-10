@@ -1,15 +1,18 @@
 <?php
 namespace Xueba\WxApi\QY;
-use GuzzleHttp\Event\CompleteEvent;
+use Xueba\WxApi\Basic;
+use Xueba\WxApi\Client as CommClient;
 use Xueba\WxApi\Crypt;
-use Xueba\WxApi\Exception;
+use Xueba\WxApi\Media;
+use Xueba\WxApi\Menu;
 
 class Client extends \GuzzleHttp\Client
 {
-    use Crypt;
-    use AccessToken, AddressBook, Message, Menu, Media, OAuth2;
+    use Basic, CommClient, Crypt, Media, Menu;
+    use AccessToken, AddressBook, Message, OAuth2;
 
     const BASE_URL = 'https://qyapi.weixin.qq.com';
+    const MEDIA_BASE_URL = 'https://qyapi.weixin.qq.com';
 
     private $_corpId;
     private $_corpSecret;
@@ -27,16 +30,6 @@ class Client extends \GuzzleHttp\Client
             self::$_wxcpt = new \WXBizMsgCrypt($this->_token, $this->_encodingAesKey, $this->_corpId);
         }
 
-        $this->getEmitter()->on('complete', function (CompleteEvent $e) {
-            $response = $e->getResponse();
-            if ($response->getHeader('Content-Type') == 'application/json; charset=utf-8')
-            {
-                $result = $response->json();
-                if (isset($result['errcode']) && $result['errcode'] != 0)
-                {
-                    throw new Exception($result['errmsg'], $result['errcode']);
-                }
-            }
-        });
+        $this->setCompleteEvent();
     }
 }

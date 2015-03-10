@@ -1,6 +1,8 @@
 <?php
 namespace Xueba\WxApi\QY\Message\Initiative;
 
+use Xueba\WxApi\Exception;
+
 class MPNews
 {
     const JSON_TEMPLATE_HEADER = <<<JSON
@@ -26,12 +28,19 @@ JSON;
 JSON;
     const JSON_TEMPLATE_FOOTER = <<<JSON
         ]
-   }
+   },
+   "safe":"%s"
 }
 JSON;
 
-    public static function getJson($agentId, array $articles = [], $toUser = '@all', $toParty = '', $toTag = '')
+    const MAX_ARTICLES = 10;
+
+    public static function getJson($agentId, array $articles = [], $toUser = '@all', $toParty = '', $toTag = '', $safe = 0)
     {
+        if (count($articles) > self::MAX_ARTICLES)
+        {
+            throw new Exception('Articles cannot exclude ' . self::MAX_ARTICLES);
+        }
         $articleJsonStrings = array();
         foreach ($articles as $article)
         {
@@ -40,6 +49,6 @@ JSON;
                 $article['title'], $article['thumb_media_id'], $article['author'], $article['content_source_url'], $article['content'], $article['digest'], $article['show_cover_pic']
             );
         }
-        return sprintf(self::JSON_TEMPLATE_HEADER, $toUser, $toParty, $toTag, $agentId) . implode(',', $articleJsonStrings) . self::JSON_TEMPLATE_FOOTER;
+        return sprintf(self::JSON_TEMPLATE_HEADER, $toUser, $toParty, $toTag, $agentId) . implode(',', $articleJsonStrings) . sprintf(self::JSON_TEMPLATE_FOOTER, $safe);
     }
 }

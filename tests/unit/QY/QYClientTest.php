@@ -1,6 +1,6 @@
 <?php
 
-class ClientTest extends \Codeception\TestCase\Test
+class QYClientTest extends \Codeception\TestCase\Test
 {
     /**
      * @var \UnitTester
@@ -101,11 +101,11 @@ class ClientTest extends \Codeception\TestCase\Test
     public function testMenu()
     {
         $buttons = array();
-        $button = new \Xueba\WxApi\QY\Button('打开网址');
-        $button->addSubButton(new \Xueba\WxApi\QY\Button('百度', 'view', '', 'http://baidu.com'));
-        $button->addSubButton(new \Xueba\WxApi\QY\Button('360', 'view', '', 'http://360.com'));
+        $button = new \Xueba\WxApi\Button('打开网址');
+        $button->addSubButton(new \Xueba\WxApi\Button('百度', 'view', '', 'http://baidu.com'));
+        $button->addSubButton(new \Xueba\WxApi\Button('360', 'view', '', 'http://360.com'));
         $buttons[] = $button;
-        $button = new \Xueba\WxApi\QY\Button('位置选择', 'location_select', 'poi_selete');
+        $button = new \Xueba\WxApi\Button('位置选择', 'location_select', 'poi_selete');
         $buttons[] = $button;
 
         $result = $this->client->createMenu($buttons, $this->agentid);
@@ -115,20 +115,6 @@ class ClientTest extends \Codeception\TestCase\Test
         $this->tester->assertEquals('打开网址', $result['menu']['button'][0]['name']);
         $result = $this->client->deleteMenu($this->agentid);
         codecept_debug($result);
-    }
-
-    public function testUploadMedia()
-    {
-        $response = $this->client->uploadMedia('/data/test.jpg','image');
-        codecept_debug($response);
-        $this->tester->assertEquals('image', $response['type']);
-    }
-
-    public function testGetMedia()
-    {
-        $response = $this->client->getMedia($this->voiceId);
-        codecept_debug($response);
-        $this->tester->assertNotEmpty($response);
     }
 
     public function testDepartment()

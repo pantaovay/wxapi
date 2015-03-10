@@ -1,9 +1,8 @@
 <?php
-namespace Xueba\WxApi\QY\Message\Passive;
+namespace Xueba\WxApi\Message\Passive;
 
 /**
- * Class Receive 接收消息与事件
- * @package Xueba\WxApi\QY\Message\Passive
+ * Class Receive 解析接收消息与事件
  */
 class Receive
 {

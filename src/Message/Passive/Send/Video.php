@@ -1,5 +1,5 @@
 <?php
-namespace Xueba\WxApi\QY\Message\Passive\Send;
+namespace Xueba\WxApi\Message\Passive\Send;
 
 class Video
 {
@@ -17,7 +17,7 @@ class Video
 </xml>
 XML;
 
-    public static function getXml($toUserName, $fromUserName, $createTime, $mediaId, $title, $description)
+    public static function getXml($toUserName, $fromUserName, $createTime, $mediaId, $title = '', $description = '')
     {
         return sprintf(self::XML_TEMPLATE, $toUserName, $fromUserName, $createTime, $mediaId, $title, $description);
     }

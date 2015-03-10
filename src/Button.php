@@ -1,7 +1,5 @@
 <?php
-namespace Xueba\WxApi\QY;
-
-use Xueba\WxApi\Exception;
+namespace Xueba\WxApi;
 
 class Button
 {

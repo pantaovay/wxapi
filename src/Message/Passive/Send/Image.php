@@ -1,5 +1,5 @@
 <?php
-namespace Xueba\WxApi\QY\Message\Passive\Send;
+namespace Xueba\WxApi\Message\Passive\Send;
 
 class Image
 {

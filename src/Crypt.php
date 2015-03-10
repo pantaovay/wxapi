@@ -63,4 +63,18 @@ trait Crypt
         }
         return self::$_wxcpt;
     }
+
+    /**
+     * 公众平台的验证逻辑不一样
+     *
+     * @return bool
+     */
+    public function checkSignature($signature, $timestamp, $nonce)
+    {
+        $tmpArr = array($this->_token, $timestamp, $nonce);
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = sha1(implode($tmpArr));
+
+        return ($tmpStr == $signature);
+    }
 }

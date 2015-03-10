@@ -1,15 +1,19 @@
 <?php
 namespace Xueba\WxApi\MP;
 use GuzzleHttp\Event\CompleteEvent;
+use Xueba\WxApi\Client as CommClient;
+use Xueba\WxApi\Basic;
 use Xueba\WxApi\Crypt;
-use Xueba\WxApi\Exception;
+use Xueba\WxApi\Media;
+use Xueba\WxApi\Menu;
 
 class Client extends \GuzzleHttp\Client
 {
-    use Crypt;
+    use Basic, CommClient, Crypt, Media, Menu;
+    use AccessToken, CustomService;
 
     const BASE_URL = 'https://api.weixin.qq.com';
-    const GET_ACCESS_TOKEN_URI = 'cgi-bin/token';
+    const MEDIA_BASE_URL = 'http://file.api.weixin.qq.com';
 
     private $_appid;
     private $_secret;
@@ -27,20 +31,6 @@ class Client extends \GuzzleHttp\Client
             self::$_wxcpt = new \WXBizMsgCrypt($this->_token, $this->_encodingAesKey, $this->_appid);
         }
 
-        $this->getEmitter()->on('complete', function (CompleteEvent $e) {
-            $result = $e->getResponse()->json();
-            if (isset($result['errcode']) && $result['errcode'] != 0)
-            {
-                throw new Exception($result['errmsg'], $result['errcode']);
-            }
-        });
-    }
-
-    public function getAccessToken()
-    {
-        $response = $this->get(self::GET_ACCESS_TOKEN_URI, [
-            'query' => ['grant_type' => 'client_credential', 'appid' => $this->_appid, 'secret' => $this->_secret]
-        ]);
-        return $response->json()['access_token'];
+        $this->setCompleteEvent();
     }
 }

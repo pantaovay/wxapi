@@ -37,7 +37,7 @@ class PassiveTest extends \Codeception\TestCase\Test
 <AgentID>5</AgentID>
 </xml>
 XML;
-        $receiveObj = new \Xueba\WxApi\QY\Message\Passive\Receive($textXml);
+        $receiveObj = new \Xueba\WxApi\Message\Passive\Receive($textXml);
         $this->tester->assertEquals([
             'ToUserName' => 'wx218c3a8f3d8918be',
             'FromUserName' => 'pantaovay',
